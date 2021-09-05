@@ -10,7 +10,6 @@
 		ADEEDA1626E50E690091424B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1526E50E690091424B /* AppDelegate.swift */; };
 		ADEEDA1826E50E690091424B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1726E50E690091424B /* SceneDelegate.swift */; };
 		ADEEDA1A26E50E690091424B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1926E50E690091424B /* ViewController.swift */; };
-		ADEEDA1D26E50E690091424B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ADEEDA1B26E50E690091424B /* Main.storyboard */; };
 		ADEEDA1F26E50E6A0091424B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ADEEDA1E26E50E6A0091424B /* Assets.xcassets */; };
 		ADEEDA2226E50E6A0091424B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ADEEDA2026E50E6A0091424B /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -20,7 +19,6 @@
 		ADEEDA1526E50E690091424B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ADEEDA1726E50E690091424B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		ADEEDA1926E50E690091424B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		ADEEDA1C26E50E690091424B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ADEEDA1E26E50E6A0091424B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ADEEDA2126E50E6A0091424B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ADEEDA2326E50E6A0091424B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,7 +57,6 @@
 				ADEEDA1526E50E690091424B /* AppDelegate.swift */,
 				ADEEDA1726E50E690091424B /* SceneDelegate.swift */,
 				ADEEDA1926E50E690091424B /* ViewController.swift */,
-				ADEEDA1B26E50E690091424B /* Main.storyboard */,
 				ADEEDA1E26E50E6A0091424B /* Assets.xcassets */,
 				ADEEDA2026E50E6A0091424B /* LaunchScreen.storyboard */,
 				ADEEDA2326E50E6A0091424B /* Info.plist */,
@@ -126,7 +123,6 @@
 			files = (
 				ADEEDA2226E50E6A0091424B /* LaunchScreen.storyboard in Resources */,
 				ADEEDA1F26E50E6A0091424B /* Assets.xcassets in Resources */,
-				ADEEDA1D26E50E690091424B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,14 +142,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		ADEEDA1B26E50E690091424B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				ADEEDA1C26E50E690091424B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		ADEEDA2026E50E6A0091424B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
