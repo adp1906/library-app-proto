@@ -20,6 +20,7 @@ class BookCell: UITableViewCell {
     let bookTitleLabel: UILabel = {
         let title = UILabel()
         title.numberOfLines = 0
+        title.font = UIFont.systemFont(ofSize: 18)
         title.adjustsFontSizeToFitWidth = true
         title.backgroundColor = .lightGray
         
@@ -29,6 +30,7 @@ class BookCell: UITableViewCell {
     let bookAuthorLabel: UILabel = {
         let author = UILabel()
         author.numberOfLines = 0
+        author.font = UIFont.systemFont(ofSize: 15)
         author.adjustsFontSizeToFitWidth = true
         author.backgroundColor = .lightGray
         
@@ -60,7 +62,7 @@ class BookCell: UITableViewCell {
         bookTitleLabel.leadingAnchor.constraint(equalTo: bookImageView.trailingAnchor, constant: 10).isActive = true
         bookTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
         bookTitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
-        bookTitleLabel.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2).isActive = true
+        bookTitleLabel.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.25).isActive = true
         
         bookAuthorLabel.translatesAutoresizingMaskIntoConstraints = false
         bookAuthorLabel.leadingAnchor.constraint(equalTo: bookImageView.trailingAnchor, constant: 10).isActive = true

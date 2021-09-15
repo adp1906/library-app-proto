@@ -45,18 +45,39 @@ class SearchResultsViewController: UIViewController {
     func configureTableView() {
         view.addSubview(tableView)
         
-        tableView.rowHeight = view.frame.height *  0.15
+        tableView.rowHeight = view.frame.height *  0.1
         
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.register(BookCell.self, forCellReuseIdentifier: reuseIdentifier)
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    // MARK: - Helper Methods
+    
+    func googleBooksURL(searchText: String)-> URL {
+        let encodedText = searchText.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+        
+        let urlString = String(format: "https://www.googleapis.com/books/v1/volumes?q=%@", encodedText)
+        
+        let url = URL(string: urlString)
+        
+        return url!
+    }
+    
+    func performBookSearch(with url: URL) -> String? {
+        do {
+            return try String(contentsOf: url, encoding: .utf8)
+        } catch {
+            print("Download Error: \(error.localizedDescription)")
+            return nil
+        }
     }
 
 
@@ -71,20 +92,23 @@ extension SearchResultsViewController: UISearchBarDelegate {
 //    }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        //print(searchBar.text!)
-        searchResults = []
         
-        if searchBar.text! != "maurice allen" {
-            for i in 0...2 {
-                let searchResult = SearchResult()
-                searchResult.bookTitle = String(format: "Fake Result %d for", i)
-                searchResult.authorName = searchBar.text!
-                searchResults.append(searchResult)
+        if !searchBar.text!.isEmpty {
+            searchBar.resignFirstResponder()
+            
+            hasSearched = true
+            searchResults = []
+            
+            let url = googleBooksURL(searchText: searchBar.text!)
+            print("URL: '\(url)'")
+            
+            if let jsonString = performBookSearch(with: url) {
+                print("Recieved JSON string '\(jsonString)'")
             }
+            
+            tableView.reloadData()
         }
         
-        hasSearched = true
-        tableView.reloadData()
     }
     
 }
@@ -107,21 +131,15 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cellIdentifier = "SearchResultCell"
-        
-        var cell: UITableViewCell! = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
-        
-        if cell == nil {
-            cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! BookCell
         
         if searchResults.count == 0 {
-            cell.textLabel!.text = "(Nothing found)"
-            cell.detailTextLabel!.text = ""
+            cell.bookTitleLabel.text = "(Nothing found)"
+            cell.bookAuthorLabel.text = ""
         } else {
             let searchResult = searchResults[indexPath.row]
-            cell.textLabel!.text = searchResult.bookTitle
-            cell.detailTextLabel!.text = searchResult.authorName
+            cell.bookTitleLabel.text = searchResult.bookTitle
+            cell.bookAuthorLabel.text = searchResult.authorName
         }
         
         return cell
