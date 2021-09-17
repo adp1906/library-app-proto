@@ -12,7 +12,7 @@ class SearchResultsViewController: UIViewController {
     //let searchController = UISearchController(searchResultsController: nil)
     let reuseIdentifier = "ResultCell"
     var tableView = UITableView()
-    var searchResults = [SearchResult]()
+    var searchResults = [Item]()
     var hasSearched = false
     
     let searchBar: UISearchBar = {
@@ -130,19 +130,33 @@ extension SearchResultsViewController: UISearchBarDelegate {
             hasSearched = true
             searchResults = []
             
+            let queue = DispatchQueue.global()
+            
             let url = googleBooksURL(searchText: searchBar.text!)
             print("URL: '\(url)'")
             
-            if let data = performBookSearch(with: url) {
-                let results = parse(data: data)
-                print("Got results: \(results[0].volumeInfo)")
+            queue.async {
+                
+                if let data = self.performBookSearch(with: url) {
+                    self.searchResults = self.parse(data: data)
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                    
+                    return
+                }
             }
+            
+//            if let data = performBookSearch(with: url) {
+//                searchResults = parse(data: data)
+//                print("Got results: \(results[0].volumeInfo)")
+//            }
             
 //            if let jsonString = performBookSearch(with: url) {
 //                print("Received JSON string '\(jsonString)'")
 //            }
             
-            tableView.reloadData()
         }
         
     }
@@ -174,8 +188,8 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
             cell.bookAuthorLabel.text = ""
         } else {
             let searchResult = searchResults[indexPath.row]
-            cell.bookTitleLabel.text = searchResult.title
-            cell.bookAuthorLabel.text = searchResult.authors.joined(separator: ", ")
+            cell.bookTitleLabel.text = searchResult.volumeInfo.title
+            cell.bookAuthorLabel.text = searchResult.volumeInfo.authors.joined(separator: ", ")
         }
         
         return cell

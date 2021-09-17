@@ -22,7 +22,7 @@ class BookCell: UITableViewCell {
         title.numberOfLines = 0
         title.font = UIFont.systemFont(ofSize: 18)
         title.adjustsFontSizeToFitWidth = true
-        title.backgroundColor = .lightGray
+        //title.backgroundColor = .lightGray
         
         return title
     }()
@@ -32,7 +32,7 @@ class BookCell: UITableViewCell {
         author.numberOfLines = 0
         author.font = UIFont.systemFont(ofSize: 15)
         author.adjustsFontSizeToFitWidth = true
-        author.backgroundColor = .lightGray
+        //author.backgroundColor = .lightGray
         
         return author
     }()
