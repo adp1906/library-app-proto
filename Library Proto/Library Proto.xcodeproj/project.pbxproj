@@ -7,21 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD30E88E26EEACA300AEFB07 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD30E88D26EEACA300AEFB07 /* SearchResult.swift */; };
 		ADEEDA1626E50E690091424B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1526E50E690091424B /* AppDelegate.swift */; };
 		ADEEDA1826E50E690091424B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1726E50E690091424B /* SceneDelegate.swift */; };
-		ADEEDA1A26E50E690091424B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1926E50E690091424B /* ViewController.swift */; };
+		ADEEDA1A26E50E690091424B /* BookListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1926E50E690091424B /* BookListViewController.swift */; };
 		ADEEDA1F26E50E6A0091424B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ADEEDA1E26E50E6A0091424B /* Assets.xcassets */; };
 		ADEEDA2226E50E6A0091424B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ADEEDA2026E50E6A0091424B /* LaunchScreen.storyboard */; };
+		ADEEDA2D26E51CD30091424B /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA2C26E51CD30091424B /* BookCell.swift */; };
+		ADEEDA2F26E5463F0091424B /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA2E26E5463F0091424B /* Book.swift */; };
+		ADEEDA5126EBC8640091424B /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA5026EBC8640091424B /* SearchResultsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AD30E88D26EEACA300AEFB07 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		ADEEDA1226E50E690091424B /* Library Proto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Library Proto.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADEEDA1526E50E690091424B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ADEEDA1726E50E690091424B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		ADEEDA1926E50E690091424B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		ADEEDA1926E50E690091424B /* BookListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookListViewController.swift; sourceTree = "<group>"; };
 		ADEEDA1E26E50E6A0091424B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ADEEDA2126E50E6A0091424B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ADEEDA2326E50E6A0091424B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ADEEDA2C26E51CD30091424B /* BookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCell.swift; sourceTree = "<group>"; };
+		ADEEDA2E26E5463F0091424B /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
+		ADEEDA5026EBC8640091424B /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +62,42 @@
 		ADEEDA1426E50E690091424B /* Library Proto */ = {
 			isa = PBXGroup;
 			children = (
+				ADEEDA2926E51B220091424B /* Model */,
+				ADEEDA2A26E51B300091424B /* View */,
+				ADEEDA2B26E51B4B0091424B /* Controller */,
 				ADEEDA1526E50E690091424B /* AppDelegate.swift */,
 				ADEEDA1726E50E690091424B /* SceneDelegate.swift */,
-				ADEEDA1926E50E690091424B /* ViewController.swift */,
 				ADEEDA1E26E50E6A0091424B /* Assets.xcassets */,
 				ADEEDA2026E50E6A0091424B /* LaunchScreen.storyboard */,
 				ADEEDA2326E50E6A0091424B /* Info.plist */,
 			);
 			path = "Library Proto";
+			sourceTree = "<group>";
+		};
+		ADEEDA2926E51B220091424B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				ADEEDA2E26E5463F0091424B /* Book.swift */,
+				AD30E88D26EEACA300AEFB07 /* SearchResult.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		ADEEDA2A26E51B300091424B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				ADEEDA2C26E51CD30091424B /* BookCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		ADEEDA2B26E51B4B0091424B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				ADEEDA1926E50E690091424B /* BookListViewController.swift */,
+				ADEEDA5026EBC8640091424B /* SearchResultsViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -133,8 +169,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ADEEDA1A26E50E690091424B /* ViewController.swift in Sources */,
+				ADEEDA5126EBC8640091424B /* SearchResultsViewController.swift in Sources */,
+				AD30E88E26EEACA300AEFB07 /* SearchResult.swift in Sources */,
+				ADEEDA2D26E51CD30091424B /* BookCell.swift in Sources */,
+				ADEEDA1A26E50E690091424B /* BookListViewController.swift in Sources */,
 				ADEEDA1626E50E690091424B /* AppDelegate.swift in Sources */,
+				ADEEDA2F26E5463F0091424B /* Book.swift in Sources */,
 				ADEEDA1826E50E690091424B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
