@@ -71,13 +71,44 @@ class SearchResultsViewController: UIViewController {
         return url!
     }
     
-    func performBookSearch(with url: URL) -> String? {
+    func performBookSearch(with url: URL) -> Data? {
         do {
-            return try String(contentsOf: url, encoding: .utf8)
+            return try Data(contentsOf: url)
         } catch {
             print("Download Error: \(error.localizedDescription)")
+            showNetworkError()
             return nil
         }
+
+    }
+    
+//    func performBookSearch(with url: URL) -> String? {
+//        do {
+//            return try String(contentsOf: url, encoding: .utf8)
+//        } catch {
+//            print("Download Error: \(error.localizedDescription)")
+//            return nil
+//        }
+//
+//    }
+    
+    func parse(data: Data) -> [Item] {
+        do {
+            let decoder = JSONDecoder()
+            let result = try decoder.decode(ResultArray.self, from: data)
+            return result.items
+        } catch {
+            print("JSON Error: \(error)")
+            return []
+        }
+    }
+    
+    func showNetworkError() {
+        let alert = UIAlertController(title: "Whoops...", message: "There was an error accessing Google Books." + " Please try again.", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
 
 
@@ -102,9 +133,14 @@ extension SearchResultsViewController: UISearchBarDelegate {
             let url = googleBooksURL(searchText: searchBar.text!)
             print("URL: '\(url)'")
             
-            if let jsonString = performBookSearch(with: url) {
-                print("Recieved JSON string '\(jsonString)'")
+            if let data = performBookSearch(with: url) {
+                let results = parse(data: data)
+                print("Got results: \(results[0].volumeInfo)")
             }
+            
+//            if let jsonString = performBookSearch(with: url) {
+//                print("Received JSON string '\(jsonString)'")
+//            }
             
             tableView.reloadData()
         }
@@ -138,8 +174,8 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
             cell.bookAuthorLabel.text = ""
         } else {
             let searchResult = searchResults[indexPath.row]
-            cell.bookTitleLabel.text = searchResult.bookTitle
-            cell.bookAuthorLabel.text = searchResult.authorName
+            cell.bookTitleLabel.text = searchResult.title
+            cell.bookAuthorLabel.text = searchResult.authors.joined(separator: ", ")
         }
         
         return cell

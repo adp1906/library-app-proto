@@ -12,19 +12,19 @@ class BookListViewController: UIViewController {
     var tableView = UITableView()
     let reuseIdentifier = "BookCell"
     let books: [Book] = [
-        Book(imageName: "Win Friends", title: "How to Win Friends & Influence People", author: "Dale Carnegie"),
-        Book(imageName: "48 Laws", title: "The 48 Laws of Power", author: "Robert Greene"),
-        Book(imageName: "The Outsiders", title: "The Outsiders", author: "S. E. Hinton"),
-        Book(imageName: "Between the World", title: "Between the World and Me", author: "Ta-Nehisi Coates"),
-        Book(imageName: "Shining", title: "The Shining", author: "Stephen King"),
-        Book(imageName: "Dance with Dragons", title: "A Dance with Dragons", author: "George R. R. Martin"),
-        Book(imageName: "Queen of Damned", title: "The Queen of the Damned", author: "Anne Rice"),
-        Book(imageName: "Harry Potter", title: "Harry Potter and the Goblet of Fire", author: "J. K. Rowling"),
-        Book(imageName: "Never Eat Alone", title: "Never Eat Alone", author: "Keith Ferrazzi"),
-        Book(imageName: "Hunger Games", title: "The Hunger Games", author: "Suzanne Collins"),
-        Book(imageName: "Misery", title: "Misery", author: "Stephen King"),
-        Book(imageName: "Interview With Vampire", title: "Interview with the Vampire", author: "Anne Rice"),
-        Book(imageName: "It", title: "It", author: "Stephen King")
+        Book(imageName: "Win Friends", title: "How to Win Friends & Influence People", authors: ["Dale Carnegie", "Macy Gray", "John Dean"]),
+        Book(imageName: "48 Laws", title: "The 48 Laws of Power", authors: ["Robert Greene"]),
+        Book(imageName: "The Outsiders", title: "The Outsiders", authors: ["S. E. Hinton"]),
+        Book(imageName: "Between the World", title: "Between the World and Me", authors: ["Ta-Nehisi Coates"]),
+        Book(imageName: "Shining", title: "The Shining", authors: ["Stephen King"]),
+        Book(imageName: "Dance with Dragons", title: "A Dance with Dragons", authors: ["George R. R. Martin"]),
+        Book(imageName: "Queen of Damned", title: "The Queen of the Damned", authors: ["Anne Rice"]),
+        Book(imageName: "Harry Potter", title: "Harry Potter and the Goblet of Fire", authors: ["J. K. Rowling"]),
+        Book(imageName: "Never Eat Alone", title: "Never Eat Alone", authors: ["Keith Ferrazzi"]),
+        Book(imageName: "Hunger Games", title: "The Hunger Games", authors: ["Suzanne Collins"]),
+        Book(imageName: "Misery", title: "Misery", authors: ["Stephen King"]),
+        Book(imageName: "Interview With Vampire", title: "Interview with the Vampire", authors: ["Anne Rice", "Stan Rice"]),
+        Book(imageName: "It", title: "It", authors: ["Stephen King"])
     ]
 
     override func viewDidLoad() {
@@ -79,7 +79,7 @@ extension BookListViewController: UITableViewDelegate, UITableViewDataSource {
         let book = books[indexPath.row]
         cell.bookImageView.image = UIImage(named: book.imageName)
         cell.bookTitleLabel.text = book.title
-        cell.bookAuthorLabel.text = book.author
+        cell.bookAuthorLabel.text = book.authors.joined(separator: ", ")
         
         return cell
     }

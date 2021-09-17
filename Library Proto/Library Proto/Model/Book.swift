@@ -10,5 +10,5 @@ import UIKit
 struct Book {
     let imageName: String
     let title: String
-    let author: String
+    let authors: [String]
 }
