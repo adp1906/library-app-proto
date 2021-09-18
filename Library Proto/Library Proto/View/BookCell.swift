@@ -9,6 +9,8 @@ import UIKit
 
 class BookCell: UITableViewCell {
     
+    var downloadTask: URLSessionDownloadTask?
+    
     let bookImageView: UIImageView = {
         let img = UIImageView()
         img.layer.masksToBounds = true
@@ -49,6 +51,23 @@ class BookCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented.")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        downloadTask?.cancel()
+        downloadTask = nil
+    }
+    
+    // MARK: - Helper Methods
+    func configure(for result: Item) {
+        bookTitleLabel.text = result.volumeInfo.title
+        bookAuthorLabel.text = result.volumeInfo.authors.joined(separator: ", ")
+        
+        bookImageView.image = UIImage(systemName: "book.closed.fill")
+        if let smallURL = URL(string: result.volumeInfo.imageLinks["smallThumbnail"]!) {
+            downloadTask = bookImageView.loadImage(url: smallURL)
+        }
     }
     
     func setupConstraints() {

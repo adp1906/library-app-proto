@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AD30E88E26EEACA300AEFB07 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD30E88D26EEACA300AEFB07 /* SearchResult.swift */; };
+		AD30E89226F6181100AEFB07 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD30E89126F6181100AEFB07 /* UIImageView+DownloadImage.swift */; };
 		ADEEDA1626E50E690091424B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1526E50E690091424B /* AppDelegate.swift */; };
 		ADEEDA1826E50E690091424B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1726E50E690091424B /* SceneDelegate.swift */; };
 		ADEEDA1A26E50E690091424B /* BookListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1926E50E690091424B /* BookListViewController.swift */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		AD30E88D26EEACA300AEFB07 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
+		AD30E89126F6181100AEFB07 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
 		ADEEDA1226E50E690091424B /* Library Proto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Library Proto.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADEEDA1526E50E690091424B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ADEEDA1726E50E690091424B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 		ADEEDA1426E50E690091424B /* Library Proto */ = {
 			isa = PBXGroup;
 			children = (
+				AD30E89126F6181100AEFB07 /* UIImageView+DownloadImage.swift */,
 				ADEEDA2926E51B220091424B /* Model */,
 				ADEEDA2A26E51B300091424B /* View */,
 				ADEEDA2B26E51B4B0091424B /* Controller */,
@@ -173,6 +176,7 @@
 				AD30E88E26EEACA300AEFB07 /* SearchResult.swift in Sources */,
 				ADEEDA2D26E51CD30091424B /* BookCell.swift in Sources */,
 				ADEEDA1A26E50E690091424B /* BookListViewController.swift in Sources */,
+				AD30E89226F6181100AEFB07 /* UIImageView+DownloadImage.swift in Sources */,
 				ADEEDA1626E50E690091424B /* AppDelegate.swift in Sources */,
 				ADEEDA2F26E5463F0091424B /* Book.swift in Sources */,
 				ADEEDA1826E50E690091424B /* SceneDelegate.swift in Sources */,

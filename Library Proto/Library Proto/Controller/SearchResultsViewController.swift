@@ -14,6 +14,7 @@ class SearchResultsViewController: UIViewController {
     var tableView = UITableView()
     var searchResults = [Item]()
     var hasSearched = false
+    var dataTask: URLSessionDataTask?
     
     let searchBar: UISearchBar = {
         let seabar = UISearchBar()
@@ -71,27 +72,6 @@ class SearchResultsViewController: UIViewController {
         return url!
     }
     
-    func performBookSearch(with url: URL) -> Data? {
-        do {
-            return try Data(contentsOf: url)
-        } catch {
-            print("Download Error: \(error.localizedDescription)")
-            showNetworkError()
-            return nil
-        }
-
-    }
-    
-//    func performBookSearch(with url: URL) -> String? {
-//        do {
-//            return try String(contentsOf: url, encoding: .utf8)
-//        } catch {
-//            print("Download Error: \(error.localizedDescription)")
-//            return nil
-//        }
-//
-//    }
-    
     func parse(data: Data) -> [Item] {
         do {
             let decoder = JSONDecoder()
@@ -127,35 +107,34 @@ extension SearchResultsViewController: UISearchBarDelegate {
         if !searchBar.text!.isEmpty {
             searchBar.resignFirstResponder()
             
+            dataTask?.cancel()
             hasSearched = true
             searchResults = []
             
-            let queue = DispatchQueue.global()
-            
             let url = googleBooksURL(searchText: searchBar.text!)
-            print("URL: '\(url)'")
-            
-            queue.async {
-                
-                if let data = self.performBookSearch(with: url) {
-                    self.searchResults = self.parse(data: data)
-                    
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-                    
+            let session = URLSession.shared
+            dataTask = session.dataTask(with: url) { data, response, error in
+                if let error = error as NSError?, error.code == -999 {
+                    print("Failure! \(error.localizedDescription)")
                     return
+                } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    if let data = data {
+                        self.searchResults = self.parse(data: data)
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
+                        return
+                    }
+                } else {
+                    print("Failure! \(response!)")
+                }
+                DispatchQueue.main.async {
+                    self.hasSearched = false
+                    self.showNetworkError()
                 }
             }
             
-//            if let data = performBookSearch(with: url) {
-//                searchResults = parse(data: data)
-//                print("Got results: \(results[0].volumeInfo)")
-//            }
-            
-//            if let jsonString = performBookSearch(with: url) {
-//                print("Received JSON string '\(jsonString)'")
-//            }
+            dataTask?.resume()
             
         }
         
@@ -188,8 +167,9 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
             cell.bookAuthorLabel.text = ""
         } else {
             let searchResult = searchResults[indexPath.row]
-            cell.bookTitleLabel.text = searchResult.volumeInfo.title
-            cell.bookAuthorLabel.text = searchResult.volumeInfo.authors.joined(separator: ", ")
+            cell.configure(for: searchResult)
+            //cell.bookTitleLabel.text = searchResult.volumeInfo.title
+            //cell.bookAuthorLabel.text = searchResult.volumeInfo.authors.joined(separator: ", ")
         }
         
         return cell
