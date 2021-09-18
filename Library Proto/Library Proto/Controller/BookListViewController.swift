@@ -11,7 +11,7 @@ class BookListViewController: UIViewController {
     
     var tableView = UITableView()
     let reuseIdentifier = "BookCell"
-    let books: [Book] = [
+    var books: [Book] = [
         Book(imageName: "Win Friends", title: "How to Win Friends & Influence People", authors: ["Dale Carnegie", "Macy Gray", "John Dean"]),
         Book(imageName: "48 Laws", title: "The 48 Laws of Power", authors: ["Robert Greene"]),
         Book(imageName: "The Outsiders", title: "The Outsiders", authors: ["S. E. Hinton"]),
@@ -82,6 +82,13 @@ extension BookListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.bookAuthorLabel.text = book.authors.joined(separator: ", ")
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        books.remove(at: indexPath.row)
+        let indexPaths = [indexPath]
+        tableView.deleteRows(at: indexPaths, with: .automatic)
     }
 }
 
