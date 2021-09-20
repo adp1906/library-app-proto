@@ -64,10 +64,16 @@ class BookCell: UITableViewCell {
         bookTitleLabel.text = result.volumeInfo.title
         bookAuthorLabel.text = result.volumeInfo.authors.joined(separator: ", ")
         
-        bookImageView.image = UIImage(systemName: "book.closed.fill")
-        if let smallURL = URL(string: result.volumeInfo.imageLinks["smallThumbnail"]!) {
-            downloadTask = bookImageView.loadImage(url: smallURL)
+        //var smallURL = URL(string: "")
+        
+        //bookImageView.image = UIImage(systemName: "book.closed.fill")
+        if let smallImgURL = URL(string: result.volumeInfo.imageLinks["smallThumbnail"]!) {
+            downloadTask = bookImageView.loadImage(url: smallImgURL)
+            //smallURL = smallImgURL
         }
+        
+        //guard let data = try? Data(contentsOf: smallURL!) else { return UIImage(systemName: "book.closed.fill")! }
+        //return UIImage(data: data)!
     }
     
     func setupConstraints() {

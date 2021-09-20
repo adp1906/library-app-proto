@@ -8,7 +8,8 @@
 import UIKit
 
 struct Book {
-    let imageName: String
+    
+    let image: UIImage
     let title: String
     let authors: [String]
 }

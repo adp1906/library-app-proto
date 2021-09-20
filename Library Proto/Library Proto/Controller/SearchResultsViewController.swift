@@ -7,14 +7,22 @@
 
 import UIKit
 
+protocol AddBookDelegate: AnyObject {
+    
+    func addBook(from controller: SearchResultsViewController, book: Item, from cache: NSCache<NSNumber, UIImage>, of key: NSNumber)
+}
+
 class SearchResultsViewController: UIViewController {
     
-    //let searchController = UISearchController(searchResultsController: nil)
     let reuseIdentifier = "ResultCell"
     var tableView = UITableView()
     var searchResults = [Item]()
     var hasSearched = false
     var dataTask: URLSessionDataTask?
+    let cache = NSCache<NSNumber, UIImage>()
+    let utilityQueue = DispatchQueue.global(qos: .utility)
+    
+    weak var delegate: AddBookDelegate?
     
     let searchBar: UISearchBar = {
         let seabar = UISearchBar()
@@ -90,7 +98,6 @@ class SearchResultsViewController: UIViewController {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
-
 
 }
 
@@ -168,8 +175,6 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         } else {
             let searchResult = searchResults[indexPath.row]
             cell.configure(for: searchResult)
-            //cell.bookTitleLabel.text = searchResult.volumeInfo.title
-            //cell.bookAuthorLabel.text = searchResult.volumeInfo.authors.joined(separator: ", ")
         }
         
         return cell
@@ -178,6 +183,23 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let book = searchResults[indexPath.row]
+        let itemNumber = NSNumber(value: indexPath.row)
+        var smallURL = URL(string: "")
+        
+        if let imgURL = URL(string: book.volumeInfo.imageLinks["smallThumbnail"]!) {
+            smallURL = imgURL
+        }
+        
+        guard let data = try? Data(contentsOf: smallURL!) else { return }
+        
+        let img =  UIImage(data: data)!
+        
+        cache.setObject(img, forKey: itemNumber)
+        
+        delegate?.addBook(from: self, book: book, from: cache, of: itemNumber)
+        
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
