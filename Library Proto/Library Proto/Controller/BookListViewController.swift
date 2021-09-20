@@ -12,20 +12,21 @@ class BookListViewController: UIViewController {
     var tableView = UITableView()
     let reuseIdentifier = "BookCell"
     var books: [Book] = [
-        Book(imageName: "Win Friends", title: "How to Win Friends & Influence People", authors: ["Dale Carnegie", "Macy Gray", "John Dean"]),
-        Book(imageName: "48 Laws", title: "The 48 Laws of Power", authors: ["Robert Greene"]),
-        Book(imageName: "The Outsiders", title: "The Outsiders", authors: ["S. E. Hinton"]),
-        Book(imageName: "Between the World", title: "Between the World and Me", authors: ["Ta-Nehisi Coates"]),
-        Book(imageName: "Shining", title: "The Shining", authors: ["Stephen King"]),
-        Book(imageName: "Dance with Dragons", title: "A Dance with Dragons", authors: ["George R. R. Martin"]),
-        Book(imageName: "Queen of Damned", title: "The Queen of the Damned", authors: ["Anne Rice"]),
-        Book(imageName: "Harry Potter", title: "Harry Potter and the Goblet of Fire", authors: ["J. K. Rowling"]),
-        Book(imageName: "Never Eat Alone", title: "Never Eat Alone", authors: ["Keith Ferrazzi"]),
-        Book(imageName: "Hunger Games", title: "The Hunger Games", authors: ["Suzanne Collins"]),
-        Book(imageName: "Misery", title: "Misery", authors: ["Stephen King"]),
-        Book(imageName: "Interview With Vampire", title: "Interview with the Vampire", authors: ["Anne Rice", "Stan Rice"]),
-        Book(imageName: "It", title: "It", authors: ["Stephen King"])
+//        Book(imageName: "Win Friends", title: "How to Win Friends & Influence People", authors: ["Dale Carnegie", "Macy Gray", "John Dean"]),
+//        Book(imageName: "48 Laws", title: "The 48 Laws of Power", authors: ["Robert Greene"]),
+//        Book(imageName: "The Outsiders", title: "The Outsiders", authors: ["S. E. Hinton"]),
+//        Book(imageName: "Between the World", title: "Between the World and Me", authors: ["Ta-Nehisi Coates"]),
+//        Book(imageName: "Shining", title: "The Shining", authors: ["Stephen King"]),
+//        Book(imageName: "Dance with Dragons", title: "A Dance with Dragons", authors: ["George R. R. Martin"]),
+//        Book(imageName: "Queen of Damned", title: "The Queen of the Damned", authors: ["Anne Rice"]),
+//        Book(imageName: "Harry Potter", title: "Harry Potter and the Goblet of Fire", authors: ["J. K. Rowling"]),
+//        Book(imageName: "Never Eat Alone", title: "Never Eat Alone", authors: ["Keith Ferrazzi"]),
+//        Book(imageName: "Hunger Games", title: "The Hunger Games", authors: ["Suzanne Collins"]),
+//        Book(imageName: "Misery", title: "Misery", authors: ["Stephen King"]),
+//        Book(imageName: "Interview With Vampire", title: "Interview with the Vampire", authors: ["Anne Rice", "Stan Rice"]),
+//        Book(imageName: "It", title: "It", authors: ["Stephen King"])
     ]
+    //var downloadTask: URLSessionDownloadTask?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,8 @@ class BookListViewController: UIViewController {
     @objc func addTapped() {
         let searchVC = SearchResultsViewController()
         navigationController?.pushViewController(searchVC, animated: true)
+        
+        searchVC.delegate = self
     }
 
 
@@ -77,7 +80,7 @@ extension BookListViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! BookCell
         
         let book = books[indexPath.row]
-        cell.bookImageView.image = UIImage(named: book.imageName)
+        cell.bookImageView.image = book.image
         cell.bookTitleLabel.text = book.title
         cell.bookAuthorLabel.text = book.authors.joined(separator: ", ")
         
@@ -90,5 +93,33 @@ extension BookListViewController: UITableViewDelegate, UITableViewDataSource {
         let indexPaths = [indexPath]
         tableView.deleteRows(at: indexPaths, with: .automatic)
     }
+}
+
+
+// MARK: - Add Book Delegate
+
+extension BookListViewController: AddBookDelegate {
+    
+    func addBook(from controller: SearchResultsViewController, book: Item, from cache: NSCache<NSNumber, UIImage>, of key: NSNumber) {
+        
+        let newRowIndex = books.count
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        
+        let newTitle = book.volumeInfo.title
+        let newAuthors = book.volumeInfo.authors
+        guard let newImage = cache.object(forKey: key) else { return }
+        
+        //print("Cached URL: \(cache.object(forKey: key)!)")
+        
+        let newBook = Book(image: newImage, title: newTitle, authors: newAuthors)
+        books.append(newBook)
+        
+        tableView.insertRows(at: indexPaths, with: .automatic)
+        navigationController?.popViewController(animated: true)
+        
+    }
+    
+    
 }
 
