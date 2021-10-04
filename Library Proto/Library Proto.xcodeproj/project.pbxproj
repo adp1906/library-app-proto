@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		AD30E88E26EEACA300AEFB07 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD30E88D26EEACA300AEFB07 /* SearchResult.swift */; };
 		AD30E89226F6181100AEFB07 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD30E89126F6181100AEFB07 /* UIImageView+DownloadImage.swift */; };
+		AD8E06CE270A0F01004AE05C /* Books.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AD8E06CC270A0F01004AE05C /* Books.xcdatamodeld */; };
+		AD8E06D0270A1551004AE05C /* Book+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8E06CF270A1551004AE05C /* Book+CoreDataClass.swift */; };
+		AD8E06D2270A161D004AE05C /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8E06D1270A161D004AE05C /* Book+CoreDataProperties.swift */; };
 		ADEEDA1626E50E690091424B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1526E50E690091424B /* AppDelegate.swift */; };
 		ADEEDA1826E50E690091424B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1726E50E690091424B /* SceneDelegate.swift */; };
 		ADEEDA1A26E50E690091424B /* BookListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA1926E50E690091424B /* BookListViewController.swift */; };
@@ -22,6 +25,9 @@
 /* Begin PBXFileReference section */
 		AD30E88D26EEACA300AEFB07 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		AD30E89126F6181100AEFB07 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
+		AD8E06CD270A0F01004AE05C /* Books.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Books.xcdatamodel; sourceTree = "<group>"; };
+		AD8E06CF270A1551004AE05C /* Book+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Book+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AD8E06D1270A161D004AE05C /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		ADEEDA1226E50E690091424B /* Library Proto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Library Proto.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADEEDA1526E50E690091424B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ADEEDA1726E50E690091424B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +88,9 @@
 			children = (
 				ADEEDA2E26E5463F0091424B /* Book.swift */,
 				AD30E88D26EEACA300AEFB07 /* SearchResult.swift */,
+				AD8E06CF270A1551004AE05C /* Book+CoreDataClass.swift */,
+				AD8E06D1270A161D004AE05C /* Book+CoreDataProperties.swift */,
+				AD8E06CC270A0F01004AE05C /* Books.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -172,7 +181,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AD8E06D0270A1551004AE05C /* Book+CoreDataClass.swift in Sources */,
+				AD8E06D2270A161D004AE05C /* Book+CoreDataProperties.swift in Sources */,
 				ADEEDA5126EBC8640091424B /* SearchResultsViewController.swift in Sources */,
+				AD8E06CE270A0F01004AE05C /* Books.xcdatamodeld in Sources */,
 				AD30E88E26EEACA300AEFB07 /* SearchResult.swift in Sources */,
 				ADEEDA2D26E51CD30091424B /* BookCell.swift in Sources */,
 				ADEEDA1A26E50E690091424B /* BookListViewController.swift in Sources */,
@@ -373,6 +385,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		AD8E06CC270A0F01004AE05C /* Books.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				AD8E06CD270A0F01004AE05C /* Books.xcdatamodel */,
+			);
+			currentVersion = AD8E06CD270A0F01004AE05C /* Books.xcdatamodel */;
+			path = Books.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = ADEEDA0A26E50E690091424B /* Project object */;
 }
