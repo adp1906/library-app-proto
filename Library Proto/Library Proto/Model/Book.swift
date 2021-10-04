@@ -7,9 +7,9 @@
 
 import UIKit
 
-struct Book {
-    
-    let image: UIImage
-    let title: String
-    let authors: [String]
-}
+//struct Book {
+//    
+//    let image: UIImage
+//    let title: String
+//    let authors: [String]
+//}

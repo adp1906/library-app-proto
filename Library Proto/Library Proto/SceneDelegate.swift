@@ -21,9 +21,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         
-        let navController = UINavigationController(rootViewController: BookListViewController())
+        let controller = BookListViewController()
+        let navController = UINavigationController(rootViewController: controller)
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        controller.context = appDelegate.persistentContainer.viewContext
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

@@ -37,8 +37,6 @@ class SearchResultsViewController: UIViewController {
         
         title = "Search"
         
-        
-        //navigationItem.searchController = searchController
         searchBar.delegate = self
         
         view.addSubview(searchBar)

@@ -6,27 +6,51 @@
 //
 
 import UIKit
+import CoreData
 
 class BookListViewController: UIViewController {
     
     var tableView = UITableView()
     let reuseIdentifier = "BookCell"
-    var books: [Book] = [
-//        Book(imageName: "Win Friends", title: "How to Win Friends & Influence People", authors: ["Dale Carnegie", "Macy Gray", "John Dean"]),
-//        Book(imageName: "48 Laws", title: "The 48 Laws of Power", authors: ["Robert Greene"]),
-//        Book(imageName: "The Outsiders", title: "The Outsiders", authors: ["S. E. Hinton"]),
-//        Book(imageName: "Between the World", title: "Between the World and Me", authors: ["Ta-Nehisi Coates"]),
-//        Book(imageName: "Shining", title: "The Shining", authors: ["Stephen King"]),
-//        Book(imageName: "Dance with Dragons", title: "A Dance with Dragons", authors: ["George R. R. Martin"]),
-//        Book(imageName: "Queen of Damned", title: "The Queen of the Damned", authors: ["Anne Rice"]),
-//        Book(imageName: "Harry Potter", title: "Harry Potter and the Goblet of Fire", authors: ["J. K. Rowling"]),
-//        Book(imageName: "Never Eat Alone", title: "Never Eat Alone", authors: ["Keith Ferrazzi"]),
-//        Book(imageName: "Hunger Games", title: "The Hunger Games", authors: ["Suzanne Collins"]),
-//        Book(imageName: "Misery", title: "Misery", authors: ["Stephen King"]),
-//        Book(imageName: "Interview With Vampire", title: "Interview with the Vampire", authors: ["Anne Rice", "Stan Rice"]),
-//        Book(imageName: "It", title: "It", authors: ["Stephen King"])
-    ]
-    //var downloadTask: URLSessionDownloadTask?
+    var books: [Book] = []
+    var context: NSManagedObjectContext?
+    
+    enum Section {
+        case main
+    }
+    
+    typealias DataSource = UITableViewDiffableDataSource<Section, NSManagedObjectID>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, NSManagedObjectID>
+    
+    private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
+        let fetchRequest: NSFetchRequest<Book> = Book.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+                
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context!, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        
+        return frc
+    }()
+    
+    lazy var dataSource: DataSource = {
+        let dataSource = DataSource(tableView: tableView) { tableView, indexPath, objectID in
+            guard let book = try? self.context?.existingObject(with: objectID) as? Book else {
+                return nil
+            }
+            let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as! BookCell
+            
+            cell.bookAuthorLabel.text = book.authors
+            cell.bookTitleLabel.text = book.title
+            if let data = book.image as Data? {
+                cell.bookImageView.image = UIImage(data: data)
+            }
+            
+            return cell
+        }
+        tableView.dataSource = dataSource
+        return dataSource
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,18 +62,39 @@ class BookListViewController: UIViewController {
                                                            action: #selector(addTapped))
         
         configureTableView()
+        
+        do {
+            try fetchedResultController.performFetch()
+            tableView.reloadData()
+        } catch {
+            fatalError("Core Data Fetch Error")
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+        setupSnapshot()
+    }
+    
+    func setupSnapshot() {
+        var snapshot = Snapshot()
+        snapshot.appendSections([Section.main])
+        var fetchedObjectIDs:[NSManagedObjectID] = []
+        guard let fetchedObjects = fetchedResultController.fetchedObjects else { return }
+        for bookObject in fetchedObjects {
+            let objectID = bookObject.objectID
+            fetchedObjectIDs.append(objectID)
+        }
+                
+        snapshot.appendItems(fetchedObjectIDs)
+        dataSource.apply(snapshot)
     }
     
     func configureTableView() {
         view.addSubview(tableView)
         
         tableView.rowHeight = view.frame.height *  0.15
-        
         tableView.delegate = self
-        tableView.dataSource = self
-        
         tableView.register(BookCell.self, forCellReuseIdentifier: reuseIdentifier)
-        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -70,29 +115,42 @@ class BookListViewController: UIViewController {
 
 // MARK:- Table View Controller Delegate & Data Source Methods
 
-extension BookListViewController: UITableViewDelegate, UITableViewDataSource {
+extension BookListViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return books.count
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! BookCell
-        
-        let book = books[indexPath.row]
-        cell.bookImageView.image = book.image
-        cell.bookTitleLabel.text = book.title
-        cell.bookAuthorLabel.text = book.authors.joined(separator: ", ")
-        
-        return cell
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        books.remove(at: indexPath.row)
-        let indexPaths = [indexPath]
-        tableView.deleteRows(at: indexPaths, with: .automatic)
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { contextualAction, view, completionHandler in
+            
+            let book = self.fetchedResultController.object(at: indexPath)
+            self.context?.delete(book)
+            self.setupSnapshot()
+            try? self.context?.save()
+            completionHandler(true)
+        }
+        deleteAction.image = UIImage(systemName: "trash.fill")
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+// MARK: - Fetched Results Controller Delegate
+
+extension BookListViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+
 }
 
 
@@ -102,20 +160,30 @@ extension BookListViewController: AddBookDelegate {
     
     func addBook(from controller: SearchResultsViewController, book: Item, from cache: NSCache<NSNumber, UIImage>, of key: NSNumber) {
         
-        let newRowIndex = books.count
-        let indexPath = IndexPath(row: newRowIndex, section: 0)
-        let indexPaths = [indexPath]
+        //let newRowIndex = books.count
+        //let indexPath = IndexPath(row: newRowIndex, section: 0)
+        //let indexPaths = [indexPath]
         
         let newTitle = book.volumeInfo.title
-        let newAuthors = book.volumeInfo.authors
+        let newAuthors = book.volumeInfo.authors.joined(separator: ", ")
         guard let newImage = cache.object(forKey: key) else { return }
+        guard let context = self.context else { return }
         
-        //print("Cached URL: \(cache.object(forKey: key)!)")
-        
-        let newBook = Book(image: newImage, title: newTitle, authors: newAuthors)
+        let newBook = Book(context: context)
+        //let newAuthors = authors
+        newBook.authors = newAuthors
+        newBook.title = newTitle
+        newBook.image = newImage.pngData() as NSData?
+        //let newBook = Book(image: newImage, title: newTitle, authors: newAuthors)
         books.append(newBook)
         
-        tableView.insertRows(at: indexPaths, with: .automatic)
+        do {
+            try context.save()
+        } catch {
+            fatalError("Core Data Save Error")
+        }
+        
+        //tableView.insertRows(at: indexPaths, with: .automatic)
         navigationController?.popViewController(animated: true)
         
     }
