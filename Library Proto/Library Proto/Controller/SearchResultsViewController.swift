@@ -29,6 +29,13 @@ class SearchResultsViewController: UIViewController {
         
         return seabar
     }()
+    
+    let noSearchResultsLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 22)
+        
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +54,11 @@ class SearchResultsViewController: UIViewController {
         searchBar.heightAnchor.constraint(equalToConstant: 56).isActive = true
         
         configureTableView()
+        
+        view.addSubview(noSearchResultsLabel)
+        noSearchResultsLabel.translatesAutoresizingMaskIntoConstraints = false
+        noSearchResultsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        noSearchResultsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
     func configureTableView() {
@@ -71,7 +83,7 @@ class SearchResultsViewController: UIViewController {
     func googleBooksURL(searchText: String)-> URL {
         let encodedText = searchText.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         
-        let urlString = String(format: "https://www.googleapis.com/books/v1/volumes?q=%@", encodedText)
+        let urlString = String(format: "https://wwwp.googleapis.com/books/v1/volumes?q=%@", encodedText)
         
         let url = URL(string: urlString)
         
@@ -85,6 +97,9 @@ class SearchResultsViewController: UIViewController {
             return result.items
         } catch {
             print("JSON Error: \(error)")
+            DispatchQueue.main.async {
+                self.noSearchResultsLabel.text = "No Results Found"
+            }
             return []
         }
     }
@@ -102,11 +117,7 @@ class SearchResultsViewController: UIViewController {
 // MARK: - Search Bar Delegate
 
 extension SearchResultsViewController: UISearchBarDelegate {
-    
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        print(searchText)
-//    }
-    
+        
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         if !searchBar.text!.isEmpty {
@@ -114,33 +125,41 @@ extension SearchResultsViewController: UISearchBarDelegate {
             
             dataTask?.cancel()
             hasSearched = true
+            noSearchResultsLabel.text = ""
             searchResults = []
             
             let url = googleBooksURL(searchText: searchBar.text!)
-            let session = URLSession.shared
-            dataTask = session.dataTask(with: url) { data, response, error in
-                if let error = error as NSError?, error.code == -999 {
-                    print("Failure! \(error.localizedDescription)")
-                    return
-                } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                    if let data = data {
-                        self.searchResults = self.parse(data: data)
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
-                        return
+            
+            dataTask = URLSession.shared.dataTask(with: url) { data, response, error in
+                
+                let code = (response as? HTTPURLResponse)?.statusCode
+                
+                switch (data, code, error) {
+                case (let data?, 200, nil):
+                    self.searchResults = self.parse(data: data)
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
                     }
-                } else {
-                    print("Failure! \(response!)")
-                }
-                DispatchQueue.main.async {
-                    self.hasSearched = false
-                    self.showNetworkError()
+                case (_, 404, nil):
+                    DispatchQueue.main.async {
+                        self.hasSearched = false
+                        self.showNetworkError()
+                    }
+                case (_, 500, nil):
+                    fatalError("Server error")
+                case (_, let c?, nil):
+                    fatalError("Unhandled error \(c)")
+                case (_, nil, _):
+                    fatalError("Invalid response")
+                case (_, _, let error?):
+                    DispatchQueue.main.async {
+                        self.hasSearched = false
+                        self.showNetworkError()
+                    }
+                    print(error.localizedDescription)
                 }
             }
-            
             dataTask?.resume()
-            
         }
         
     }
@@ -153,27 +172,16 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if !hasSearched {
-            return 0
-        } else if searchResults.count == 0 {
-            return 1
-        } else {
-            return searchResults.count
-        }
+        return searchResults.count
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! BookCell
+        let searchResult = searchResults[indexPath.row]
         
-        if searchResults.count == 0 {
-            cell.bookTitleLabel.text = "(Nothing found)"
-            cell.bookAuthorLabel.text = ""
-        } else {
-            let searchResult = searchResults[indexPath.row]
-            cell.configure(for: searchResult)
-        }
+        cell.configure(for: searchResult)
         
         return cell
     }

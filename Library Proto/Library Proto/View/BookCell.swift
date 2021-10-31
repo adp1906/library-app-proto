@@ -42,8 +42,6 @@ class BookCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         addSubview(bookImageView)
-        //addSubview(bookTitleLabel)
-        //addSubview(bookAuthorLabel)
         
         configureStackView()
         setupConstraints()
@@ -87,7 +85,6 @@ class BookCell: UITableViewCell {
         bookTitleLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 5).isActive = true
         bookTitleLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -5).isActive = true
         bookTitleLabel.topAnchor.constraint(equalTo: stackView.topAnchor, constant: 10).isActive = true
-        bookTitleLabel.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.25).isActive = true
 
         bookAuthorLabel.translatesAutoresizingMaskIntoConstraints = false
         bookAuthorLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 5).isActive = true

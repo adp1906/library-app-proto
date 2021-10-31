@@ -27,7 +27,10 @@ class BookListViewController: UIViewController {
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
                 
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context!, sectionNameKeyPath: nil, cacheName: nil)
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                             managedObjectContext: context!,
+                                             sectionNameKeyPath: nil,
+                                             cacheName: nil)
         frc.delegate = self
         
         return frc
@@ -38,7 +41,8 @@ class BookListViewController: UIViewController {
             guard let book = try? self.context?.existingObject(with: objectID) as? Book else {
                 return nil
             }
-            let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as! BookCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier,
+                                                     for: indexPath) as! BookCell
             
             cell.bookAuthorLabel.text = book.authors
             cell.bookTitleLabel.text = book.title
@@ -160,21 +164,15 @@ extension BookListViewController: AddBookDelegate {
     
     func addBook(from controller: SearchResultsViewController, book: Item, from cache: NSCache<NSNumber, UIImage>, of key: NSNumber) {
         
-        //let newRowIndex = books.count
-        //let indexPath = IndexPath(row: newRowIndex, section: 0)
-        //let indexPaths = [indexPath]
-        
         let newTitle = book.volumeInfo.title
         let newAuthors = book.volumeInfo.authors.joined(separator: ", ")
         guard let newImage = cache.object(forKey: key) else { return }
         guard let context = self.context else { return }
         
         let newBook = Book(context: context)
-        //let newAuthors = authors
         newBook.authors = newAuthors
         newBook.title = newTitle
         newBook.image = newImage.pngData() as NSData?
-        //let newBook = Book(image: newImage, title: newTitle, authors: newAuthors)
         books.append(newBook)
         
         do {
@@ -183,7 +181,6 @@ extension BookListViewController: AddBookDelegate {
             fatalError("Core Data Save Error")
         }
         
-        //tableView.insertRows(at: indexPaths, with: .automatic)
         navigationController?.popViewController(animated: true)
         
     }

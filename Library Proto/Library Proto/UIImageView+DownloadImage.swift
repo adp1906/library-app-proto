@@ -11,16 +11,28 @@ extension UIImageView {
     
     func loadImage(url: URL) -> URLSessionDownloadTask {
 
-        let session = URLSession.shared
-
-        let downloadTask = session.downloadTask(with: url) { [weak self] url, _, error in
-            if error == nil, let url = url, let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
-
+        let downloadTask = URLSession.shared.downloadTask(with: url) { [weak self] url, response, error in
+            
+            let code = (response as? HTTPURLResponse)?.statusCode
+            
+            switch (url, code, error) {
+            case (let url?, 200, nil):
+                guard let data = try? Data(contentsOf: url),
+                      let image = UIImage(data: data)
+                else { return }
                 DispatchQueue.main.async {
-                    if let weakSelf = self {
-                        weakSelf.image = image
-                    }
+                    self?.image = image
                 }
+            case (_, 404, nil):
+                fatalError("File not found")
+            case (_, 500, nil):
+                fatalError("Server error")
+            case (_, let c?, nil):
+                fatalError("Unhandled error \(c)")
+            case (_, nil, _):
+                fatalError("Invalid response")
+            case (_, _, let error?):
+                fatalError(error.localizedDescription)
             }
         }
         downloadTask.resume()
