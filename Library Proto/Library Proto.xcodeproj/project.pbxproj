@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AD30E88E26EEACA300AEFB07 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD30E88D26EEACA300AEFB07 /* SearchResult.swift */; };
-		AD30E89226F6181100AEFB07 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD30E89126F6181100AEFB07 /* UIImageView+DownloadImage.swift */; };
+		AD30E89226F6181100AEFB07 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD30E89126F6181100AEFB07 /* UIImageViewExtension.swift */; };
 		AD8E06CE270A0F01004AE05C /* Books.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AD8E06CC270A0F01004AE05C /* Books.xcdatamodeld */; };
 		AD8E06D0270A1551004AE05C /* Book+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8E06CF270A1551004AE05C /* Book+CoreDataClass.swift */; };
 		AD8E06D2270A161D004AE05C /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8E06D1270A161D004AE05C /* Book+CoreDataProperties.swift */; };
@@ -18,13 +18,16 @@
 		ADEEDA1F26E50E6A0091424B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ADEEDA1E26E50E6A0091424B /* Assets.xcassets */; };
 		ADEEDA2226E50E6A0091424B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ADEEDA2026E50E6A0091424B /* LaunchScreen.storyboard */; };
 		ADEEDA2D26E51CD30091424B /* BookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA2C26E51CD30091424B /* BookCell.swift */; };
-		ADEEDA2F26E5463F0091424B /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA2E26E5463F0091424B /* Book.swift */; };
 		ADEEDA5126EBC8640091424B /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADEEDA5026EBC8640091424B /* SearchResultsViewController.swift */; };
+		ADF6B9AD27332AC300D54066 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF6B9AC27332AC300D54066 /* ImageLoader.swift */; };
+		ADF6B9AF273343DC00D54066 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF6B9AE273343DC00D54066 /* Image.swift */; };
+		ADF6B9B12733445D00D54066 /* ResultArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF6B9B02733445D00D54066 /* ResultArray.swift */; };
+		ADF6B9B32733448B00D54066 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADF6B9B22733448B00D54066 /* Item.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AD30E88D26EEACA300AEFB07 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
-		AD30E89126F6181100AEFB07 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
+		AD30E89126F6181100AEFB07 /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
 		AD8E06CD270A0F01004AE05C /* Books.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Books.xcdatamodel; sourceTree = "<group>"; };
 		AD8E06CF270A1551004AE05C /* Book+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Book+CoreDataClass.swift"; sourceTree = "<group>"; };
 		AD8E06D1270A161D004AE05C /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -36,8 +39,11 @@
 		ADEEDA2126E50E6A0091424B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ADEEDA2326E50E6A0091424B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ADEEDA2C26E51CD30091424B /* BookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCell.swift; sourceTree = "<group>"; };
-		ADEEDA2E26E5463F0091424B /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		ADEEDA5026EBC8640091424B /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
+		ADF6B9AC27332AC300D54066 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		ADF6B9AE273343DC00D54066 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		ADF6B9B02733445D00D54066 /* ResultArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultArray.swift; sourceTree = "<group>"; };
+		ADF6B9B22733448B00D54066 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +76,8 @@
 		ADEEDA1426E50E690091424B /* Library Proto */ = {
 			isa = PBXGroup;
 			children = (
-				AD30E89126F6181100AEFB07 /* UIImageView+DownloadImage.swift */,
+				ADF6B9AC27332AC300D54066 /* ImageLoader.swift */,
+				AD30E89126F6181100AEFB07 /* UIImageViewExtension.swift */,
 				ADEEDA2926E51B220091424B /* Model */,
 				ADEEDA2A26E51B300091424B /* View */,
 				ADEEDA2B26E51B4B0091424B /* Controller */,
@@ -86,8 +93,10 @@
 		ADEEDA2926E51B220091424B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				ADEEDA2E26E5463F0091424B /* Book.swift */,
+				ADF6B9B02733445D00D54066 /* ResultArray.swift */,
+				ADF6B9B22733448B00D54066 /* Item.swift */,
 				AD30E88D26EEACA300AEFB07 /* SearchResult.swift */,
+				ADF6B9AE273343DC00D54066 /* Image.swift */,
 				AD8E06CF270A1551004AE05C /* Book+CoreDataClass.swift */,
 				AD8E06D1270A161D004AE05C /* Book+CoreDataProperties.swift */,
 				AD8E06CC270A0F01004AE05C /* Books.xcdatamodeld */,
@@ -182,15 +191,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD8E06D0270A1551004AE05C /* Book+CoreDataClass.swift in Sources */,
+				ADF6B9AF273343DC00D54066 /* Image.swift in Sources */,
 				AD8E06D2270A161D004AE05C /* Book+CoreDataProperties.swift in Sources */,
 				ADEEDA5126EBC8640091424B /* SearchResultsViewController.swift in Sources */,
+				ADF6B9B32733448B00D54066 /* Item.swift in Sources */,
 				AD8E06CE270A0F01004AE05C /* Books.xcdatamodeld in Sources */,
 				AD30E88E26EEACA300AEFB07 /* SearchResult.swift in Sources */,
+				ADF6B9AD27332AC300D54066 /* ImageLoader.swift in Sources */,
 				ADEEDA2D26E51CD30091424B /* BookCell.swift in Sources */,
 				ADEEDA1A26E50E690091424B /* BookListViewController.swift in Sources */,
-				AD30E89226F6181100AEFB07 /* UIImageView+DownloadImage.swift in Sources */,
+				ADF6B9B12733445D00D54066 /* ResultArray.swift in Sources */,
+				AD30E89226F6181100AEFB07 /* UIImageViewExtension.swift in Sources */,
 				ADEEDA1626E50E690091424B /* AppDelegate.swift in Sources */,
-				ADEEDA2F26E5463F0091424B /* Book.swift in Sources */,
 				ADEEDA1826E50E690091424B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

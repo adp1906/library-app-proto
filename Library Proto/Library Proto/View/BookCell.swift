@@ -9,7 +9,7 @@ import UIKit
 
 class BookCell: UITableViewCell {
     
-    var downloadTask: URLSessionDownloadTask?
+    lazy var bookImageLoader = ImageLoader(acceptor: bookImageView)
     var stackView = UIStackView()
     
     let bookImageView: UIImageView = {
@@ -53,8 +53,8 @@ class BookCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        downloadTask?.cancel()
-        downloadTask = nil
+        //downloadTask?.cancel()
+        //downloadTask = nil
     }
     
     // MARK: - Helper Methods
@@ -63,7 +63,7 @@ class BookCell: UITableViewCell {
         bookAuthorLabel.text = result.volumeInfo.authors.joined(separator: ", ")
         
         if let smallImgURL = URL(string: result.volumeInfo.imageLinks["smallThumbnail"]!) {
-            downloadTask = bookImageView.loadImage(url: smallImgURL)
+            bookImageLoader.load(url: smallImgURL)
         }
         
     }
@@ -78,8 +78,7 @@ class BookCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.leadingAnchor.constraint(equalTo: bookImageView.trailingAnchor).isActive = true
         stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -7).isActive = true
-        stackView.topAnchor.constraint(equalTo: bookImageView.topAnchor, constant: 10).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: bookImageView.bottomAnchor, constant: -10).isActive = true
+        stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         bookTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         bookTitleLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 5).isActive = true
