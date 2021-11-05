@@ -7,6 +7,19 @@
 
 import Foundation
 
-class Item: Codable {
+class Item: Codable, Hashable {
+    var id = UUID()
     var volumeInfo: SearchResult
+    
+    enum CodingKeys: String, CodingKey {
+        case volumeInfo
+    }
+    
+    func hash(into hasher: inout Hasher) {
+      hasher.combine(id)
+    }
+    
+    static func == (lhs: Item, rhs: Item) -> Bool {
+        lhs.id == rhs.id
+    }
 }

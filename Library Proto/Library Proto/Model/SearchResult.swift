@@ -8,7 +8,7 @@
 import Foundation
 
 class SearchResult: Codable {
-    var title = ""
-    var authors: [String] = []
+    var title: String
+    var authors: [String]
     var imageLinks: [String: String]
 }
