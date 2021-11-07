@@ -10,9 +10,9 @@ import CoreData
 
 class BookListViewController: UIViewController {
     
-    var tableView = UITableView()
-    let reuseIdentifier = "BookCell"
-    var books: [Book] = []
+    private var tableView = UITableView()
+    private let reuseIdentifier = "BookCell"
+    private var books: [Book] = []
     var context: NSManagedObjectContext?
     
     enum Section {
@@ -25,20 +25,29 @@ class BookListViewController: UIViewController {
     private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
         let fetchRequest: NSFetchRequest<Book> = Book.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        var bookContext = NSManagedObjectContext()
         fetchRequest.sortDescriptors = [sortDescriptor]
+        
+        if context != nil {
+            bookContext = context!
+        }
                 
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context!, sectionNameKeyPath: nil, cacheName: nil)
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                             managedObjectContext: bookContext,
+                                             sectionNameKeyPath: nil,
+                                             cacheName: nil)
         frc.delegate = self
         
         return frc
     }()
     
-    lazy var dataSource: DataSource = {
+    private lazy var dataSource: DataSource = {
         let dataSource = DataSource(tableView: tableView) { tableView, indexPath, objectID in
             guard let book = try? self.context?.existingObject(with: objectID) as? Book else {
                 return nil
             }
-            let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as! BookCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier,
+                                                           for: indexPath) as? BookCell else { return nil }
             
             cell.bookAuthorLabel.text = book.authors
             cell.bookTitleLabel.text = book.title
@@ -61,7 +70,8 @@ class BookListViewController: UIViewController {
                                                            target: self,
                                                            action: #selector(addTapped))
         
-        configureTableView()
+        setupConstraints()
+        setupTableView()
         
         do {
             try fetchedResultController.performFetch()
@@ -75,7 +85,7 @@ class BookListViewController: UIViewController {
         setupSnapshot()
     }
     
-    func setupSnapshot() {
+    private func setupSnapshot() {
         var snapshot = Snapshot()
         snapshot.appendSections([Section.main])
         var fetchedObjectIDs:[NSManagedObjectID] = []
@@ -89,17 +99,34 @@ class BookListViewController: UIViewController {
         dataSource.apply(snapshot)
     }
     
-    func configureTableView() {
+    private func setupConstraints() {
         view.addSubview(tableView)
         
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func setupTableView() {
         tableView.rowHeight = view.frame.height *  0.15
         tableView.delegate = self
         tableView.register(BookCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    private func createBookObject(in context: NSManagedObjectContext,
+                                  title: String,
+                                  authors: String,
+                                  image: UIImage) -> Book {
+        let book = Book(context: context)
+        book.authors = authors
+        book.title = title
+        book.image = image.pngData() as NSData?
+        
+        return book
     }
     
     @objc func addTapped() {
@@ -160,21 +187,12 @@ extension BookListViewController: AddBookDelegate {
     
     func addBook(from controller: SearchResultsViewController, book: Item, from cache: NSCache<NSNumber, UIImage>, of key: NSNumber) {
         
-        //let newRowIndex = books.count
-        //let indexPath = IndexPath(row: newRowIndex, section: 0)
-        //let indexPaths = [indexPath]
-        
         let newTitle = book.volumeInfo.title
         let newAuthors = book.volumeInfo.authors.joined(separator: ", ")
         guard let newImage = cache.object(forKey: key) else { return }
         guard let context = self.context else { return }
         
-        let newBook = Book(context: context)
-        //let newAuthors = authors
-        newBook.authors = newAuthors
-        newBook.title = newTitle
-        newBook.image = newImage.pngData() as NSData?
-        //let newBook = Book(image: newImage, title: newTitle, authors: newAuthors)
+        let newBook = createBookObject(in: context, title: newTitle, authors: newAuthors, image: newImage)
         books.append(newBook)
         
         do {
@@ -183,7 +201,6 @@ extension BookListViewController: AddBookDelegate {
             fatalError("Core Data Save Error")
         }
         
-        //tableView.insertRows(at: indexPaths, with: .automatic)
         navigationController?.popViewController(animated: true)
         
     }
