@@ -33,20 +33,16 @@ class SearchResultsViewController: UIViewController {
     
     private lazy var dataSource: DataSource = {
         let dataSource = DataSource(tableView: tableView) { tableView, indexPath, objectID in
-            if indexPath.row >= 0 {
-                let searchResult = self.searchResults[indexPath.row]
-                let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as! BookCell
-                cell.bookAuthorLabel.text = searchResult.volumeInfo.authors.joined(separator: ", ")
-                cell.bookTitleLabel.text = searchResult.volumeInfo.title
-                guard let smallURLString = searchResult.volumeInfo.imageLinks["smallThumbnail"] else { return nil }
-                guard let smallImgURL = URL(string: smallURLString) else { return nil }
-                let bookImageLoader = ImageLoader(acceptor: cell.bookImageView)
-                bookImageLoader.load(url: smallImgURL)
-                
-                return cell
-            } else {
-                return nil
-            }
+            let searchResult = self.searchResults[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: indexPath) as! BookCell
+            cell.bookAuthorLabel.text = searchResult.volumeInfo.authors.joined(separator: ", ")
+            cell.bookTitleLabel.text = searchResult.volumeInfo.title
+            guard let smallURLString = searchResult.volumeInfo.imageLinks["smallThumbnail"] else { return nil }
+            guard let smallImgURL = URL(string: smallURLString) else { return nil }
+            let bookImageLoader = ImageLoader(acceptor: cell.bookImageView)
+            bookImageLoader.load(url: smallImgURL)
+            
+            return cell
         }
         tableView.dataSource = dataSource
         return dataSource
